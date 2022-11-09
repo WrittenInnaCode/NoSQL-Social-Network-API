@@ -29,13 +29,13 @@ module.exports = {
             .then((userThoughts) => {
                 return User.findOneAndUpdate(
                     { _id: req.body.userId },
-                    { $push: { thoughts: userThoughts._id } },
+                    { $addToSet: { thoughts: userThoughts._id } },
                     { new: true }
                 );
             })
-            .then((userThoughts) =>
-                !userThoughts
-                    ? res.status(404).json({ message: '🤔 No thoughts with that ID' })
+            .then((user) =>
+                !user
+                    ? res.status(404).json({ message: '🤔 Thought created, but found no user with that ID' })
                     : res.json(userThoughts)
             )
             .catch((err) => {
@@ -67,19 +67,25 @@ module.exports = {
             .then((userThoughts) =>
                 !userThoughts
                     ? res.status(404).json({ message: '🤔 No thoughts with that ID' })
-                    : res.json(userThoughts)
+                    : User.findOneAndUpdate(
+                        { thoughts: req.params.thoughtId },
+                        { $pull: { thoughts: req.params.thoughtId } },
+                        { new: true }
+                    )
             )
-            .catch((err) => {
-                console.log(err);
-                res.json({ message: '💬 Thought has been deleted!' });
-            });
+            .then((user) =>
+                !user
+                    ? res.status(404).json({ message: 'Thought deleted but no user with this id!' })
+                    : res.json({ message: '💬 Thought successfully deleted!' })
+            )
+            .catch((err) => res.status(500).json(err));
     },
 
     // Add a reaction to a thought
     addReaction(req, res) {
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $push: { reactions: req.body } }, // $addToSet:
+            { $addToSet: { reactions: req.body } },
             { runValidators: true, new: true }
         )
             .then((userThoughts) =>
