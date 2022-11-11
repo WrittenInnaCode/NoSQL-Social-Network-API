@@ -28,13 +28,13 @@ module.exports = {
         Thought.create(req.body)
             .then((userThoughts) => {
                 return User.findOneAndUpdate(
-                    { _id: req.body.userId },
+                    { username: req.body.username },
                     { $addToSet: { thoughts: userThoughts._id } },
                     { new: true }
                 );
             })
-            .then((user) =>
-                !user
+            .then((userThoughts) =>
+                !userThoughts
                     ? res.status(404).json({ message: '🤔 Thought created, but found no user with that ID' })
                     : res.json(userThoughts)
             )

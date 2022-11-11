@@ -13,8 +13,8 @@ module.exports = {
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.userId })
             .select('-__v')
-            // .populate('friends')
-            // .populate('thoughts')
+            .populate('friends')
+            .populate('thoughts')
             .then((user) =>
                 !user
                     ? res.status(404).json({ message: '🙈 No user with that ID' })
@@ -39,8 +39,10 @@ module.exports = {
     // Update a user
     updateUser(req, res) {
         User.findOneAndUpdate(
-            { _id: params.id },
-            body,
+            { _id: req.params.userId },
+            {
+                $set: req.body
+            },
             {
                 new: true,
                 runValidators: true
