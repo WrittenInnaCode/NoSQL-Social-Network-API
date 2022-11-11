@@ -2,7 +2,7 @@
 
 💻 [The repo can be found here.](https://github.com/WrittenInnaCode/NoSQL-Social-Network-API)
 
-📺 [Check out the walkthough video here.]()
+📺 [Check out the walkthough video here.](https://drive.google.com/file/d/1IeaFde_St-HmyzQXNt0L5Cqrf2JxQpsQ/view)
 <br/><br/>
 
 ## Table of Contents:
@@ -46,7 +46,7 @@ npm start
 
 ## Screenshot
 
-![alt screen shot]()
+![alt screen shot](assets/images/ScreenShot.png)
 <br/><br/>
 
 ## Contributor:
